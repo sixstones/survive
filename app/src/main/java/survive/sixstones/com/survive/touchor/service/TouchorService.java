@@ -1,21 +1,19 @@
-package survive.sixstones.com.survive.account.service;
+package survive.sixstones.com.survive.touchor.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import survive.sixstones.com.survive.account.presenter.ITouchorPresenter;
-import survive.sixstones.com.survive.account.presenter.TouchorPresenter;
-import survive.sixstones.com.survive.account.view.ITouchorView;
-import survive.sixstones.com.survive.account.view.TouchorType;
-import survive.sixstones.com.survive.account.view.TouchorView;
+import survive.sixstones.com.survive.touchor.Touchor;
+import survive.sixstones.com.survive.touchor.view.TouchorType;
+import survive.sixstones.com.survive.touchor.view.TouchorView;
 
 public class TouchorService extends Service {
 
     private static final String TAG = "TouchorService";
 
-    private ITouchorView touchorView;
+    private Touchor.View touchorView;
 
     public TouchorService() {
     }

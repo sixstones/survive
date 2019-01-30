@@ -1,4 +1,4 @@
-package survive.sixstones.com.survive.account.model;
+package survive.sixstones.com.survive.touchor.model;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

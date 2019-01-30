@@ -1,4 +1,4 @@
-package survive.sixstones.com.survive.account.view;
+package survive.sixstones.com.survive.touchor.view;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -9,21 +9,19 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import survive.sixstones.com.survive.R;
-import survive.sixstones.com.survive.account.presenter.ITouchorPresenter;
-import survive.sixstones.com.survive.account.presenter.TouchorPresenter;
+import survive.sixstones.com.survive.touchor.Touchor;
 
-public class TouchorView extends View implements ITouchorView {
+public class TouchorView extends View implements Touchor.View {
 
     private static final String TAG = "TouchorView";
 
-    private ITouchorPresenter touchorPresenter;
+    private Touchor.Presenter mPresenter;
 
     private TouchorType touchorType;
 
@@ -45,13 +43,12 @@ public class TouchorView extends View implements ITouchorView {
     public TouchorView(Context context) {
         super(context);
         mContext = context;
-        touchorPresenter = new TouchorPresenter(this);
         statusBarHeight = getStatusBarHeight();
     }
 
     @Override
-    public void onAddSuccess() {
-
+    public void setPresenter(Touchor.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     @Override
@@ -92,7 +89,7 @@ public class TouchorView extends View implements ITouchorView {
         smallTouch.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                touchorPresenter.moveTouchor(event);
+                mPresenter.moveTouchor(event);
                 return false;
             }
         });
@@ -101,7 +98,7 @@ public class TouchorView extends View implements ITouchorView {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "small touch click");
-                touchorPresenter.swichtTouch();
+                mPresenter.swichtTouch();
             }
         });
 
@@ -122,7 +119,7 @@ public class TouchorView extends View implements ITouchorView {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "small touch click");
-                touchorPresenter.swichtTouch();
+                mPresenter.swichtTouch();
             }
         });
     }
@@ -159,8 +156,6 @@ public class TouchorView extends View implements ITouchorView {
         }
         return statusBarHeight;
     }
-
-
 
 
 }

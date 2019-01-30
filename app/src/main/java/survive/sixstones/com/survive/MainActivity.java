@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import survive.sixstones.com.survive.account.service.TouchorService;
+import survive.sixstones.com.survive.touchor.service.TouchorService;
 
 public class MainActivity extends AppCompatActivity {
 
