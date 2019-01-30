@@ -37,22 +37,16 @@ public class TouchorView extends View implements ITouchorView {
 
     private int statusBarHeight;
 
-    private ImageButton smallTouch;
-
     private EditText largeTouchEdit;
-
-    private Button largeTouchButton;
 
     private Button cancelButton;
 
-    private boolean isSmallCreated = false;
-
-    private boolean isLargeCreated = false;
 
     public TouchorView(Context context) {
         super(context);
         mContext = context;
         touchorPresenter = new TouchorPresenter(this);
+        statusBarHeight = getStatusBarHeight();
     }
 
     @Override
@@ -71,30 +65,30 @@ public class TouchorView extends View implements ITouchorView {
             this.layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         }
 
-        this.layoutParams.format = PixelFormat.RGBA_8888;
-        this.layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        this.layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
-        this.layoutParams.x = 0;
-        this.layoutParams.y = 0;
-        this.layoutParams.width = 300;
-        this.layoutParams.height = 300;
-
         if (touchorType == TouchorType.SMALL) {
             createSmallTouchor();
         } else {
             createLargeTouchor();
         }
+
+        this.layoutParams.format = PixelFormat.RGBA_8888;
+        this.layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        this.layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
+        this.layoutParams.x = 0;
+        this.layoutParams.y = 0;
+
         windowManager.addView(touchorLayout, layoutParams);
-        touchorLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
     }
 
     void createSmallTouchor() {
         this.touchorType = TouchorType.SMALL;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         touchorLayout = (LinearLayout) inflater.inflate(R.layout.layout_small_touchor, null);
-        smallTouch = (ImageButton) touchorLayout.findViewById(R.id.smallTouchor);
-        isSmallCreated = true;
-
+        ImageButton smallTouch = touchorLayout.findViewById(R.id.smallTouchor);
+        touchorLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        this.layoutParams.width = touchorLayout.getMeasuredWidth();
+        this.layoutParams.height = touchorLayout.getMeasuredHeight();
         smallTouch.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -118,10 +112,12 @@ public class TouchorView extends View implements ITouchorView {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         touchorLayout = (LinearLayout) inflater.inflate(R.layout.layout_large_touchor, null);
         largeTouchEdit = (EditText) touchorLayout.findViewById(R.id.accountAmountEdit);
-        largeTouchButton = (Button) touchorLayout.findViewById(R.id.addAccountBtn);
+        Button largeTouchButton = (Button) touchorLayout.findViewById(R.id.addAccountBtn);
         cancelButton = (Button) touchorLayout.findViewById(R.id.cancelBtn);
-        isLargeCreated = true;
         largeTouchEdit.setFocusable(true);
+        touchorLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        this.layoutParams.width = touchorLayout.getMeasuredWidth();
+        this.layoutParams.height = touchorLayout.getMeasuredHeight();
         cancelButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,8 +129,8 @@ public class TouchorView extends View implements ITouchorView {
 
     @Override
     public void onTouchorMove(MotionEvent motionEvent) {
-        layoutParams.x = (int) motionEvent.getRawX() - 150;
-        layoutParams.y = (int) motionEvent.getRawY() - 150 - statusBarHeight;
+        layoutParams.x = (int) motionEvent.getRawX() - layoutParams.width/2;
+        layoutParams.y = (int) motionEvent.getRawY() - layoutParams.height/2-getStatusBarHeight();
         windowManager.updateViewLayout(touchorLayout, layoutParams);
     }
 
@@ -163,6 +159,8 @@ public class TouchorView extends View implements ITouchorView {
         }
         return statusBarHeight;
     }
+
+
 
 
 }
